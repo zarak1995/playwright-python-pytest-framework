@@ -3,6 +3,7 @@ import pytest
 import pytest_html
 import base64
 import re
+import os
 
 from pathlib import Path
 from datetime import datetime
@@ -11,6 +12,24 @@ from datetime import datetime
 PROJECT_ROOT = Path(__file__).parent
 SCREENSHOT_DIR = PROJECT_ROOT / "screenshots"
 
+
+# ==========================================
+# BROWSER CONFIGURATION (LOCAL vs CI/CD)
+# ==========================================
+
+@pytest.fixture(scope="session")
+def browser_type_launch_args():
+
+    is_ci = os.getenv("CI", "false").lower() == "true"
+
+    return {
+        "headless": is_ci
+    }
+
+
+# ==========================================
+# FAILURE SCREENSHOT + HTML REPORT
+# ==========================================
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -86,6 +105,9 @@ def pytest_runtest_makereport(item, call):
             print(f"\nScreenshot capture failed: {e}")
 
 
+# ==========================================
+# AUTOUSE SETUP AND TEARDOWN
+# ==========================================
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_test():
@@ -95,4 +117,3 @@ def setup_test():
     yield
 
     print("\n========== Test Teardown ==========")
-
