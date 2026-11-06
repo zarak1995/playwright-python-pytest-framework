@@ -86,11 +86,13 @@ def pytest_runtest_makereport(item, call):
             print(f"\nScreenshot capture failed: {e}")
 
 
-@pytest.fixture
+
+@pytest.fixture(scope="function", autouse=True)
 def setup_test():
 
-    print("\n========== Test Started ==========")
+    print("\n========== Test Setup ==========")
 
     yield
 
-    print("\n========== Test Completed ==========")
+    print("\n========== Test Teardown ==========")
+
