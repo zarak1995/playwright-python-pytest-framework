@@ -8,7 +8,7 @@ class CartPage(BasePage):
 
         super().__init__(page)
 
-        self.cart_product_name = ".inventory_item_name"
+        self.cart_product_name = ".cart_item .inventory_item_name"
         self.cart_quantity = ".cart_quantity"
         self.remove_button = "#remove-sauce-labs-backpack"
         self.continue_shopping_button = "#continue-shopping"
